@@ -1,0 +1,123 @@
+<div class="app-new flex-row align-items-center">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <p></p>
+      	<div class="card">
+        <div class="card-header">
+          <i class="fa fa fa-list fa-2x">&nbsp;WishList</i> 
+        </div>
+        <div class="card-body">
+          <table class="table">
+            <thead>
+              <tr>
+                <th width = "80%" class="dropdown">
+                    <button type="button" class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      TAG
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <div class="dropdown-item">
+                       <div class = "wrapper">
+                          <div class="category">
+                            <h3>Price</h3>
+
+                          <label><input class="filter_check" type="checkbox" name="price_1"> Less than ¥ 20</label><label><input class="filter_check" type="checkbox" name="price_2"> Less than ¥ 40</label><label><input class="filter_check" type="checkbox" name="price_wallet"> Less than Steam Wallet balance</label></div>
+                          <div class="category">
+                            <h2>Discount</h2>
+                            <label><input class="filter_check" type="checkbox" name="discount_any"> On sale</label>
+                            <label><input class="filter_check" type="checkbox" name="discount_50"> 50% or more</label>
+                            <label><input class="filter_check" type="checkbox" name="discount_75"> 75% or more</label>
+                            <label><input class="filter_check" type="checkbox" name="discount_75"> 100% or more</label>
+                          </div>
+                          <div class="category">
+                            <h2>Exclude</h2>
+                            <label><input class="filter_check" type="checkbox" name="ex_earlyaccess"> Early Access</label>
+                            <label><input class="filter_check" type="checkbox" name="ex_prerelease"> Pre-release</label>
+                            <label><input class="filter_check" type="checkbox" name="ex_vr"> VR-Only</label>
+                          </div>
+                          <div class="category">
+                            <h2>Only show</h2>
+                            <label><input class="filter_check" type="checkbox" name="platform_windows"> Windows</label>
+                            <label><input class="filter_check" type="checkbox" name="platform_mac"> Mac OS X</label>
+                            <label><input class="filter_check" type="checkbox" name="platform_linux"> SteamOS + Linux</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  <th width = "10%" class="dropdown">
+                  <button type="button" class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    SORT BY
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">From A-Z</a>
+                    <a class="dropdown-item" href="#">From Z-A</a>
+                  </div>
+                </th>
+                <th width = "10%" class="dropdown">
+                  <button type="button" class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    RATINGS
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">From Highest</a>
+                    <a class="dropdown-item" href="#">From Lowest</a>
+                  </div>
+                </th>
+                <div class = "input-group" style="text-align: right;">
+                  <span class="input-group-prepend">
+                    <button type="button" class="btn btn-primary"><i class="fa fa-search"></i> Search</button>
+                  </span>
+                  <input type="text" id="input1-group2" name="input1-group2" class="form-control" placeholder="Game name">
+                </div>
+              </tr>
+            </thead>
+          </table>
+        </div>
+          <table>
+              <tr>
+                  <div class = "card">
+                  <div class="card-body p-3 clearfix">
+                    <a class = "applogo float-left" href = "#" tabindex="-1" aria-hidden="false">
+                      <img src = "/#">
+                    </a>
+                    <div class="h5 text-primary mb-0 mt-2">$1.999,50 <button type="button" class="btn btn-sm btn-outline-primary float-right" ng-click="removeItem()" id="{{'button-' + g.genre}}">Remove</button></div>
+                    <div class="text-muted text-uppercase font-weight-bold font-xs">Income
+                  </div>
+                  </div>
+                  <div class="card-footer px-3 py-2">
+                    <a class="font-weight-bold font-xs btn-block text-muted" href="#">View More <i class="fa fa-angle-right float-right font-lg"></i></a>
+                  </div>
+                  </div>
+              </tr> 
+              <tr>
+                  <div class = "card">
+                  <div class="card-body p-3 clearfix">
+                    <a class = "applogo float-left" href = "#" tabindex="-1" aria-hidden="false">
+                      <img src = "/#">
+                    </a>
+                    <div class="h5 text-primary mb-0 mt-2">$1.999,50 <button type="button" class="btn btn-sm btn-outline-primary float-right" ng-click="removeItem()" id="{{'button-' + g.genre}}">Remove</button></div>
+                    <div class="text-muted text-uppercase font-weight-bold font-xs">Income
+                  </div>
+                  </div>
+                  <div class="card-footer px-3 py-2">
+                    <a class="font-weight-bold font-xs btn-block text-muted" href="#">View More <i class="fa fa-angle-right float-right font-lg"></i></a>
+                  </div>
+                  </div>
+              </tr> 
+          </table>
+          <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">Prev</a></li>
+            <li class="page-item active">
+              <a class="page-link" href="#">1</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">4</a></li>
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+          </ul>
+        </div>
+      </div>
+      </div>
+	</div>
+  </div>
+</div>

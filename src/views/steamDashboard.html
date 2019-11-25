@@ -1,0 +1,220 @@
+<div class="app-new flex-row align-items-center">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+      	<img class="float-left" width="80" alt="Steam icon logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Steam_icon_logo.svg/512px-Steam_icon_logo.svg.png">
+      	<h2 class="display-3 mr-4" style="color:white">&nbsp;Steam</h1>
+        <div class="input-prepend input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fa fa-search"></i></span>
+          </div>
+          <input id="prependedInput" class="form-control" size="16" type="text" placeholder="What are you looking for?">
+          <span class="input-group-append">
+            <button class="btn btn-info" type="button">Search</button>
+          </span>
+        </div>
+        
+      </div>
+    </div>
+    <p></p>
+    <div class="row justify-content-center">
+    	<div class="col-md-12">
+    		<div class="clearfix">
+    			<button type="button" class="btn btn-outline-primary" ng-click="showMovies(g)" id="{{'button-' + g.genre}}">
+            		<!--{{g.genre}}--> 
+            		Primary
+          		</button>
+    			<button type="button" class="btn btn-outline-primary" ng-repeat="g in genres" ng-click="showMovies(g)" id="{{'button-' + g.genre}}">
+            		<!--{{g.genre}}--> 
+            		Primary
+          		</button>	
+        	</div>
+    	</div>
+    </div>
+  </div>
+</div>
+
+<p style="height:10px"></p>
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="card-new" ng-controller="dashboardCtrl1">
+        <h1 ng-model="data">{{data}}</h1>
+        <div class="card-header-new">
+          <i class="fa fa-align-justify fa-2x">&nbsp;Top 10 Games</i> 
+        </div>
+        <div class="card-body-new">
+
+          <table class="table table-sm">
+            <thead style = "color:#fff">
+              <tr>
+              	<th class = "table-title">
+              		<span class = "hide-small"> Top 10 Games </span>
+              	</th>
+              	<th>Names</th>
+              	<th>Ratings</th>
+              	<th>Tags</th> 
+                <!--<th>Username</th>
+                <th>Date registered</th>
+                <th>Role</th>
+                <th>Status</th>-->
+              </tr>
+            </thead>
+            <tbody style = "color:#fff">
+              <tr>
+              	<td class = "applogo">
+              		<a href = "#" tabindex="-1" aria-hidden="false">
+              			<img src = "/#">
+              		</a>
+              	</td>
+              	<td>
+                	<a href = "/#" style = "color:#fff">
+                  Dota2
+              		</a>
+              	</td>
+                <td>Member</td>
+                <td>
+                  <span class="badge badge-success">Active</span>
+                </td>
+              </tr>
+              <tr>
+                <td class = "applogo">
+              		<a href = "/#" tabindex="-1" aria-hidden="true">
+              			<img src = "/#">
+              		</a>
+                <td>2012/02/01</td>
+                <td>Staff</td>
+                <td>
+                  <span class="badge badge-danger">Banned</span>
+                </td>
+              </tr>
+              <tr>
+                <td class = "applogo">
+              		<a href = "/#" tabindex="-1" aria-hidden="true">
+              			<img src = "/#">
+              		</a>
+                <td>2012/02/01</td>
+                <td>Admin</td>
+                <td>
+                  <span class="badge badge-dark">Inactive</span>
+                </td>
+              </tr>
+              <tr>
+                <td class = "applogo">
+              		<a href = "/#" tabindex="-1" aria-hidden="true">
+              			<img src = "/#">
+              		</a>
+                <td>2012/03/01</td>
+                <td>Member</td>
+                <td>
+                  <span class="badge badge-warning">Pending</span>
+                </td>
+              </tr>
+              <tr>
+                <td class = "applogo">
+              		<a href = "/#" tabindex="-1" aria-hidden="true">
+              			<img src = "/#">
+              		</a>
+                <td>2012/01/21</td>
+                <td>Staff</td>
+                <td>
+                  <span class="badge badge-success">Active</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+    <div class="col-lg-6">
+      <div class="card-new">
+        <div class="card-header-new">
+          <i class="fa fa-align-justify fa-2x">&nbsp;Top 10 Games</i> 
+        </div>
+        <div class="card-body-new">
+
+          <table class="table table-sm">
+            <thead style = "color:#fff">
+              <tr>
+              	<th class = "table-title">
+              		<span class = "hide-small"> Top 10 Games </span>
+              	</th>
+              	<th>Names</th>
+              	<th>Ratings</th>
+              	<th>Tags</th> 
+                <!--<th>Username</th>
+                <th>Date registered</th>
+                <th>Role</th>
+                <th>Status</th>-->
+              </tr>
+            </thead>
+            <tbody style = "color:#fff">
+              <tr>
+              	<td class = "applogo">
+              		<a href = "#" tabindex="-1" aria-hidden="false">
+              			<img src = "/#">
+              		</a>
+              	</td>
+              	<td>
+                	<a href = "/#" style = "color:#fff">
+                		DOTA2
+              		</a>
+              	</td>
+                <td>Member</td>
+                <td>
+                  <span class="badge badge-success">Active</span>
+                </td>
+              </tr>
+              <tr>
+                <td class = "applogo">
+              		<a href = "/#" tabindex="-1" aria-hidden="true">
+              			<img src = "/#">
+              		</a>
+                <td>2012/02/01</td>
+                <td>Staff</td>
+                <td>
+                  <span class="badge badge-danger">Banned</span>
+                </td>
+              </tr>
+              <tr>
+                <td class = "applogo">
+              		<a href = "/#" tabindex="-1" aria-hidden="true">
+              			<img src = "/#">
+              		</a>
+                <td>2012/02/01</td>
+                <td>Admin</td>
+                <td>
+                  <span class="badge badge-dark">Inactive</span>
+                </td>
+              </tr>
+              <tr>
+                <td class = "applogo">
+              		<a href = "/#" tabindex="-1" aria-hidden="true">
+              			<img src = "/#">
+              		</a>
+                <td>2012/03/01</td>
+                <td>Member</td>
+                <td>
+                  <span class="badge badge-warning">Pending</span>
+                </td>
+              </tr>
+              <tr>
+                <td class = "applogo">
+              		<a href = "/#" tabindex="-1" aria-hidden="true">
+              			<img src = "/#">
+              		</a>
+                <td>2012/01/21</td>
+                <td>Staff</td>
+                <td>
+                  <span class="badge badge-success">Active</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--/.row-->
+</div>
