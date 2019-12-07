@@ -29,25 +29,9 @@ def select_names_10(conn):
     return res
 
 
-def add_like(conn, game_id):
-    cur = conn.cursor()
-    sql = "insert into usertable values('localhost','%s')" % game_id
-    try:
-        x = cur.execute(sql)
-        print("insertion success.", sql)
-        conn.commit()
-        cur.close()
-        return True
-    except Exception:
-        print(traceback.format_exc())
-        print("[ERROR] SQL query not executed.")
-        cur.close()
-        return None
-
-
-#################
-### DASHBOARD ###
-#################
+#####################
+##### DASHBOARD #####
+#####################
 def select_top_ratings(conn, tag):
     '''
     A function that return top n games based on ratings.
@@ -56,8 +40,6 @@ def select_top_ratings(conn, tag):
     #return (str:name, int:positive_ratings, str:tags, str:url of header_image) in order.
     '''
     cur = conn.cursor()
-    # get top 10 based on ratings
-    print(tag,type(tag))
     # on dashboard
     if tag:
         if len(tag) == 1:
@@ -69,6 +51,7 @@ def select_top_ratings(conn, tag):
                    ' intersect '.join(["SELECT steam_appid FROM steam_genres WHERE genres = '%s'"%i for i in tag]) + \
                     ')'
 
+        # get top 10 based on ratings
         sql = "SELECT * FROM\
                 (SELECT g.name, ROUND(g.positive_ratings / (g.positive_ratings + g.negative_ratings) * 10, 1) AS rating, g.tags, h.header_image\
                 FROM steam_games g, steam_headerimage h, game_appid ga\
@@ -131,6 +114,9 @@ def select_top_ratings(conn, tag):
     cur.close()
     return res
 
+#####################
+##### SEARCHING #####
+#####################
 
 def search_games(title, price=None, tags=None):
     '''
@@ -140,12 +126,14 @@ def search_games(title, price=None, tags=None):
     :param tags: ['','']
     :return:
     '''
+    cur = conn.cursor()
     # dashboard search
+    #TODO
     if price is None and tags is None:
         sql = "select name from steam_games where lower(name) like '%%%s%%';"%title
         try:
             x = cur.execute(sql)
-            res['ratings'] = x.fetchall()
+            res = x.fetchall()
             print('result of fetch:', res)
 
         except Exception:
@@ -156,11 +144,82 @@ def search_games(title, price=None, tags=None):
         cur.close()
         return res
 
+    # searching with advanced filtering
+    else:
+        #TODO
+        return [[]]
+
+#####################
+##### GAME PAGE #####
+#####################
+
+def game_details(gameid):
+    '''
+    Show game details in the game page
+    :param gameid: int
+    :return: list
+    '''
+    #TODO
+    return []
+
+#####################
+##### WISH-LIST #####
+#####################
+
+def add_like(conn, gameid):
+    '''
+    delete a game which is already in the wish-list
+    :param conn: connection
+    :param gameid: int
+    :return: bool
+    '''
+    cur = conn.cursor()
+    sql = "insert into usertable values('localhost','%s')" % gameid
+    try:
+        x = cur.execute(sql)
+        print("insertion success.", sql)
+        conn.commit()
+        cur.close()
+        return True
+    except Exception:
+        print(traceback.format_exc())
+        print("[ERROR] SQL query not executed.")
+        cur.close()
+        return False
 
 
+def delete_like(conn, gameid):
+    '''
+    delete a game which is already in the wish-list
+    :param conn: connection
+    :param gameid: int
+    :return: bool
+    '''
+    cur = conn.cursor()
+    sql = "DELETE FROM usertable WHERE gameid='%s'" % gameid
+    try:
+        cur.execute(sql)
+        print("deletion success.", sql)
+        conn.commit()
+        cur.close()
+        return True
+    except Exception:
+        print(traceback.format_exc())
+        print("[ERROR] SQL query not executed.")
+        cur.close()
+        return False
 
+
+def show_wishlist():
+    '''
+    show every game and its information in the waitlist on the page
+    :return: list
+    '''
+    # TODO
+
+    return [[]]
 
 if __name__ == "__main__":
     conn = get_connection()
-    select_top_ratings(conn)
+
     conn.close()

@@ -12,8 +12,118 @@ CORS(app, resources=r'/api/*')
 
 
 #--------------------------
-#--- test ---
+#------- dashboard --------
 #--------------------------
+
+@app.route("/api/dashboard/top", methods=["GET"])
+def get_top_ratings():
+    tag = request.args.get('tag')
+    if tag:
+        tag = json.loads(tag)  # list of strings
+    conn = get_connection()
+    res = None
+    if conn is not None:
+        status = 'success'
+        res = select_top_ratings(conn, tag)
+        conn.close()
+    else:
+        status = 'failure'
+    return jsonify({'data': res, 'DBstatus': status})
+
+@app.route("/api/dashboard/search", methods=["GET"])
+def dashboard_search():
+    title = request.args.get('title', '', str).lower()
+    conn = get_connection()
+    res = None
+    if conn is not None:
+        status = 'success'
+        res = search_games(title)
+        conn.close()
+    else:
+        status = 'failure'
+    return jsonify({'data': res, 'DBstatus': status})
+
+
+#--------------------------
+#------- Game Page --------
+#--------------------------
+
+
+@app.route("/api/game", methods=["GET"])
+def game():
+    # check the request
+    gameid = request.args.get('gameid', '', str)
+    if not gameid:
+        return jsonify(dict(error='缺少参数'))
+    try:
+        gameid = int(gameid)
+    except ValueError:
+        return jsonify(dict(error='参数格式错误'))
+
+    # check DB connection and execute query
+    conn = get_connection()
+    res = None
+    if conn is not None:
+        status = 'success'
+        res = game_details(gameid)
+        conn.close()
+    else:
+        status = 'failure'
+    return jsonify({'data': res, 'DBstatus': status})
+
+#----------------
+#--- wishList ---
+#----------------
+
+@app.route("/api/wishlist/add", methods=['POST'])
+def wishlist_add_game():
+    conn = get_connection()
+    if conn is not None:
+        status = 'success'
+    else:
+        status = 'failure'
+    if request.method == 'POST':
+        gameid = request.form['gameid']
+        res = add_like(conn, gameid)
+        print(game_id)
+        res = game_id
+        conn.close()
+        return jsonify({'data': res, 'DBstatus': status})
+
+
+@app.route("/api/wishlist/del", methods=['POST'])
+def wishlist_delete_game():
+    conn = get_connection()
+    if conn is not None:
+        status = 'success'
+    else:
+        status = 'failure'
+    if request.method == 'POST':
+        gameid = request.form['gameid']
+        res = delete_like(conn, gameid)
+        print(game_id)
+        res = game_id
+        conn.close()
+        return jsonify({'data': res, 'DBstatus': status})
+
+
+@app.route("/api/wishlist/show", methods=['GET'])
+def wishlist_delete_game():
+    conn = get_connection()
+    if conn is not None:
+        status = 'success'
+    else:
+        status = 'failure'
+    res = show_wishlist()
+    print(res)
+    conn.close()
+    return jsonify({'data': res, 'DBstatus': status})
+
+
+
+#------------
+#--- test ---
+#------------
 
 @app.route("/api/test/", methods=['GET'])
 def info():
@@ -30,7 +140,7 @@ def get_names():
         conn.close()
     else:
         status = 'failure'
-    return jsonify({'data': res, 'status': status})
+    return jsonify({'data': res, 'DBstatus': status})
 
 
 @app.route("/api/posttest", methods=['POST'])
@@ -46,40 +156,8 @@ def post_test():
         print(game_id)
         res = game_id
         conn.close()
-        return jsonify({'data': res, 'status': status})
-#--------------------------
-#--- dashboard ---
-#--------------------------
-
-@app.route("/api/dashboard/top", methods=["GET"])
-def get_top_ratings():
-    tag = request.args.get('tag')
-    if tag:
-        tag = json.loads(tag)  # list of strings
-    conn = get_connection()
-    res = None
-    if conn is not None:
-        status = 'success'
-        res = select_top_ratings(conn, tag)
-        conn.close()
-    else:
-        status = 'failure'
-    return jsonify({'data': res, 'status': status})
-
-@app.route("/api/dashboard/search", methods=["GET"])
-def dashboard_search():
-    title = request.args.get('title', '', str).lower()
-    conn = get_connection()
-    res = None
-    if conn is not None:
-        status = 'success'
-        res = search_games(title)
-        conn.close()
-    else:
-        status = 'failure'
-    return jsonify({'data': res, 'status': status})
-
+        return jsonify({'data': res, 'DBstatus': status})
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=50009)
+    app.run(host='0.0.0.0', port=5000)
