@@ -119,12 +119,20 @@ def wishlist_delete_game():
 
 @app.route("/api/wishlist/show", methods=['GET'])
 def wishlist_show_game():
+    order = request.args.get('order')
+    if order is None:
+        order = 0
+    else:
+        try:
+            order = int(order)
+        except ValueError:
+            return jsonify(dict(error='参数格式错误'))
     conn = get_connection()
     if conn is not None:
         status = 'success'
     else:
         status = 'failure'
-    res = show_wishlist(conn)
+    res = show_wishlist(conn, order)
     print(res)
     conn.close()
     return jsonify({'data': res, 'DBstatus': status})

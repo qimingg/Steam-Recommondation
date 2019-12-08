@@ -43,36 +43,36 @@ def select_top_ratings(conn, tag):
     # on dashboard
     if tag is not None and len(tag) != 0:
         if len(tag) == 1:
-            pref = "WITH game_appid AS\
-                (SELECT steam_appid FROM steam_genres\
-                WHERE genres = '%s')"%tag[0]
+            pref = "WITH game_appid AS " \
+                   "(SELECT steam_appid FROM steam_genres " \
+                   "WHERE genres = '%s')"%tag[0]
         else:
             pref = "WITH game_appid AS(" + \
                    ' intersect '.join(["SELECT steam_appid FROM steam_genres WHERE genres = '%s'"%i for i in tag]) + \
                     ')'
 
         # get top 10 based on ratings
-        sql = "SELECT * FROM\
-                (SELECT g.appid, g.name, ROUND(g.positive_ratings / (g.positive_ratings + g.negative_ratings) * 10, 1) AS rating, g.tags, h.header_image\
-                FROM steam_games g, steam_headerimage h, game_appid ga\
-                WHERE g.appid = h.steam_appid\
-                AND ga.steam_appid = g.appid\
-                AND g.positive_ratings >= 1000\
-                ORDER BY rating DESC)\
-                WHERE ROWNUM <= 10"
+        sql = "SELECT * FROM " \
+              "(SELECT g.appid, g.name, ROUND(g.positive_ratings / (g.positive_ratings + g.negative_ratings) * 10, 1) AS rating, g.tags, h.header_image " \
+              "FROM steam_games g, steam_headerimage h, game_appid ga " \
+              "WHERE g.appid = h.steam_appid " \
+              "AND ga.steam_appid = g.appid " \
+              "AND g.positive_ratings >= 1000 " \
+              "ORDER BY rating DESC) " \
+              "WHERE ROWNUM <= 10"
         # get top 10 based on numbers of views
-        sql2 = "SELECT g.appid, t.title, t.num as num_of_reviews, g. tags, h.header_image\
-                FROM \
-                (SELECT * FROM\
-                (SELECT title, COUNT(*) as num\
-                FROM steam_reviews\
-                GROUP BY title\
-                ORDER BY COUNT(*) DESC)\
-                WHERE ROWNUM <= 10) t, steam_games g, steam_headerimage h, game_appid ga\
-                WHERE t.title = g.name\
-                AND ga.steam_appid = g.appid\
-                AND g.appid = h.steam_appid\
-                ORDER BY num_of_reviews DESC"
+        sql2 = "SELECT g.appid, t.title, t.num as num_of_reviews, g. tags, h.header_image " \
+               "FROM " \
+               "(SELECT * FROM " \
+               "(SELECT title, COUNT(*) as num " \
+               "FROM steam_reviews " \
+               "GROUP BY title " \
+               "ORDER BY COUNT(*) DESC) " \
+               "WHERE ROWNUM <= 10) t, steam_games g, steam_headerimage h, game_appid ga " \
+               "WHERE t.title = g.name " \
+               "AND ga.steam_appid = g.appid " \
+               "AND g.appid = h.steam_appid " \
+               "ORDER BY num_of_reviews DESC"
         sql = pref + sql
         sql2 = pref + sql2
 
@@ -128,7 +128,6 @@ def search_games(conn, title, limit, offset, price=None, tags=None):
     '''
     cur = conn.cursor()
     # dashboard search
-    #TODO
     if price is None and tags is None:
         sql = "SELECT appid, name, rating, tags, header_image FROM (" \
               "SELECT ROWNUM AS rn, g.appid, g.name, g.positive_ratings," \
@@ -136,7 +135,7 @@ def search_games(conn, title, limit, offset, price=None, tags=None):
               "FROM steam_games g, steam_headerimage h " \
               "WHERE LOWER(g.name) like '%%%s%%' AND g.appid = h.steam_appid " \
               "ORDER BY g.positive_ratings DESC) temp " \
-              "WHERE temp.rn>%s AND temp.rn<=%s"%(title, offset, offset+limit)
+              "WHERE temp.rn>%s AND temp.rn<=%s" % (title, offset, offset+limit)
         print(sql)
         try:
             x = cur.execute(sql)
@@ -145,7 +144,7 @@ def search_games(conn, title, limit, offset, price=None, tags=None):
 
         except Exception:
             print(traceback.format_exc())
-            print("[ERROR] SQL query not executed.",sql)
+            print("[ERROR] SQL query not executed.", sql)
             cur.close()
             return None
         cur.close()
@@ -161,27 +160,26 @@ def search_games(conn, title, limit, offset, price=None, tags=None):
 #####################
 
 def game_details(conn, gameid):
-    '''
+    """
     Show game details in the game page
     :param gameid: int
     :return: list
-    '''
-    #TODO
+    """
     cur = conn.cursor()
     try:
-        sql = "SELECT * FROM steam_games WHERE appid = '%s'"%gameid
+        sql = "SELECT * FROM steam_games WHERE appid = '%s'" % gameid
         x = cur.execute(sql)
         res = list(x.fetchone())
-        sql = "SELECT short_description FROM steam_description WHERE steam_appid = '%s'"%gameid
+        sql = "SELECT short_description FROM steam_description WHERE steam_appid = '%s'" % gameid
         x = cur.execute(sql)
         res.extend(list(x.fetchone()))
-        sql = "SELECT header_image FROM steam_headerimage WHERE steam_appid = '%s'"%gameid
+        sql = "SELECT header_image FROM steam_headerimage WHERE steam_appid = '%s'" % gameid
         x = cur.execute(sql)
         res.extend(list(x.fetchone()))
-        sql = "SELECT minimum,recommended FROM steam_requirements WHERE steam_appid = '%s'"%gameid
+        sql = "SELECT minimum,recommended FROM steam_requirements WHERE steam_appid = '%s'" % gameid
         x = cur.execute(sql)
         res.extend(list(x.fetchone()))
-        sql = "SELECT thumbnail,full_image FROM steam_screenshots WHERE steam_appid = '%s' AND ROWNUM <= 3"%gameid
+        sql = "SELECT thumbnail,full_image FROM steam_screenshots WHERE steam_appid = '%s' AND ROWNUM <= 3" % gameid
         x = cur.execute(sql)
         res.append(x.fetchall())
         print(res)
@@ -190,7 +188,7 @@ def game_details(conn, gameid):
 
     except Exception:
         print(traceback.format_exc())
-        print("[ERROR] SQL query not executed.",sql)
+        print("[ERROR] SQL query not executed.", sql)
         cur.close()
         return None
 
@@ -199,12 +197,12 @@ def game_details(conn, gameid):
 #####################
 
 def add_like(conn, gameid):
-    '''
+    """
     delete a game which is already in the wish-list
     :param conn: connection
     :param gameid: int
     :return: bool
-    '''
+    """
     cur = conn.cursor()
     sql = "insert into usertable values('localhost','%s')" % gameid
     try:
@@ -221,12 +219,12 @@ def add_like(conn, gameid):
 
 
 def delete_like(conn, gameid):
-    '''
+    """
     delete a game which is already in the wish-list
     :param conn: connection
     :param gameid: int
     :return: bool
-    '''
+    """
     cur = conn.cursor()
     sql = "DELETE FROM usertable WHERE gameid='%s'" % gameid
     try:
@@ -242,15 +240,39 @@ def delete_like(conn, gameid):
         return False
 
 
-def show_wishlist(conn):
-    '''
-    show every game and its information in the waitlist on the page
-    :return: list
-    '''
-    # TODO
+def show_wishlist(conn, order):
+    """
+    Show every game and its information in the waitlist on the page
+    :param conn:
+    :param order: int
+    :return:
+    """
     cur = conn.cursor()
+    sql = "SELECT g.appid, g.name, " \
+          "ROUND(g.positive_ratings / (g.positive_ratings + g.negative_ratings) * 10, 1) AS rating," \
+          "g.tags, h.header_image, g.price " \
+          "FROM steam_games g, steam_headerimage h " \
+          "WHERE LOWER(g.name) like '%grand%' AND g.appid = h.steam_appid " \
+          "ORDER BY "
+    if order == 0:
+        sql += "g.name"
+    elif order == 1:
+        sql += "g.name DESC"
+    elif order == 2:
+        sql += "g.price"
+    elif order == 3:
+        sql += "g.price DESC"
 
-    return [[]]
+    try:
+        x = cur.execute(sql)
+        res = x.fetchall()
+        cur.close()
+        return res
+    except Exception:
+        print(traceback.format_exc())
+        print("[ERROR] SQL query not executed.")
+        cur.close()
+        return None
 
 if __name__ == "__main__":
     conn = get_connection()
