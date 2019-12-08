@@ -68,7 +68,7 @@ def select_top_ratings(conn, tag):
                "FROM steam_reviews " \
                "GROUP BY title " \
                "ORDER BY COUNT(*) DESC) " \
-               "WHERE ROWNUM <= 10) t, steam_games g, steam_headerimage h, game_appid ga " \
+               ") t, steam_games g, steam_headerimage h, game_appid ga " \
                "WHERE t.title = g.name " \
                "AND ga.steam_appid = g.appid " \
                "AND g.appid = h.steam_appid " \
@@ -170,6 +170,7 @@ def game_details(conn, gameid):
         sql = "SELECT * FROM steam_games WHERE appid = '%s'" % gameid
         x = cur.execute(sql)
         res = list(x.fetchone())
+        res[5] = res[5].replace(';', '; ')
         sql = "SELECT short_description FROM steam_description WHERE steam_appid = '%s'" % gameid
         x = cur.execute(sql)
         res.extend(list(x.fetchone()))
