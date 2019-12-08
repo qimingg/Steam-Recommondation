@@ -30,14 +30,24 @@ def get_top_ratings():
         status = 'failure'
     return jsonify({'data': res, 'DBstatus': status})
 
+
 @app.route("/api/dashboard/search", methods=["GET"])
 def dashboard_search():
     title = request.args.get('title', '', str).lower()
+    limit = request.args.get('limit', '5')
+    offset = request.args.get('offset', '0')
+    if not title:
+        return jsonify(dict(error='缺少参数'))
+    try:
+        limit = int(limit)
+        offset = int(offset)
+    except ValueError:
+        return jsonify(dict(error='参数格式错误'))
     conn = get_connection()
     res = None
     if conn is not None:
         status = 'success'
-        res = search_games(title)
+        res = search_games(conn, title, limit, offset)
         conn.close()
     else:
         status = 'failure'
@@ -65,7 +75,7 @@ def game():
     res = None
     if conn is not None:
         status = 'success'
-        res = game_details(gameid)
+        res = game_details(conn, gameid)
         conn.close()
     else:
         status = 'failure'
@@ -85,8 +95,8 @@ def wishlist_add_game():
     if request.method == 'POST':
         gameid = request.form['gameid']
         res = add_like(conn, gameid)
-        print(game_id)
-        res = game_id
+        print(gameid)
+        res = gameid
         conn.close()
         return jsonify({'data': res, 'DBstatus': status})
 
@@ -101,20 +111,20 @@ def wishlist_delete_game():
     if request.method == 'POST':
         gameid = request.form['gameid']
         res = delete_like(conn, gameid)
-        print(game_id)
-        res = game_id
+        print(gameid)
+        res = gameid
         conn.close()
         return jsonify({'data': res, 'DBstatus': status})
 
 
 @app.route("/api/wishlist/show", methods=['GET'])
-def wishlist_delete_game():
+def wishlist_show_game():
     conn = get_connection()
     if conn is not None:
         status = 'success'
     else:
         status = 'failure'
-    res = show_wishlist()
+    res = show_wishlist(conn)
     print(res)
     conn.close()
     return jsonify({'data': res, 'DBstatus': status})
