@@ -252,8 +252,8 @@ def show_wishlist(conn, order):
     sql = "SELECT g.appid, g.name, " \
           "ROUND(g.positive_ratings / (g.positive_ratings + g.negative_ratings) * 10, 1) AS rating," \
           "g.tags, h.header_image, g.price " \
-          "FROM steam_games g, steam_headerimage h " \
-          "WHERE LOWER(g.name) like '%grand%' AND g.appid = h.steam_appid " \
+          "FROM usertable u, steam_games g, steam_headerimage h " \
+          "WHERE u.gameid = g.appid AND g.appid = h.steam_appid " \
           "ORDER BY "
     if order == 0:
         sql += "g.name"
