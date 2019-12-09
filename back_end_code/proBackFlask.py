@@ -37,12 +37,12 @@ def dashboard_search():
     limit = request.args.get('limit', '5')
     offset = request.args.get('offset', '0')
     if not title:
-        return jsonify(dict(error='缺少参数'))
+        return jsonify(dict(error='lack of parameters'))
     try:
         limit = int(limit)
         offset = int(offset)
     except ValueError:
-        return jsonify(dict(error='参数格式错误'))
+        return jsonify(dict(error='parameters error'))
     conn = get_connection()
     res = None
     if conn is not None:
@@ -64,11 +64,11 @@ def game():
     # check the request
     gameid = request.args.get('gameid', '', str)
     if not gameid:
-        return jsonify(dict(error='缺少参数'))
+        return jsonify(dict(error='lack of parameters'))
     try:
         gameid = int(gameid)
     except ValueError:
-        return jsonify(dict(error='参数格式错误'))
+        return jsonify(dict(error='parameters error'))
 
     # check DB connection and execute query
     conn = get_connection()
@@ -126,7 +126,7 @@ def wishlist_show_game():
         try:
             order = int(order)
         except ValueError:
-            return jsonify(dict(error='参数格式错误'))
+            return jsonify(dict(error='parameters error'))
     conn = get_connection()
     if conn is not None:
         status = 'success'
@@ -137,6 +137,18 @@ def wishlist_show_game():
     conn.close()
     return jsonify({'data': res, 'DBstatus': status})
 
+
+@app.route("/api/wishlist/recommendation", methods=['GET'])
+def wishlist_recommend():
+    conn = get_connection()
+    if conn is not None:
+        status = 'success'
+    else:
+        status = 'failure'
+    res = wishlist_rec(conn)
+    print(res)
+    conn.close()
+    return jsonify({'data': res, 'DBstatus': status})
 
 
 #------------

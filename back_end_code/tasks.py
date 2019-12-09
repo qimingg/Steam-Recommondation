@@ -275,6 +275,50 @@ def show_wishlist(conn, order):
         cur.close()
         return None
 
+
+def wishlist_rec(conn):
+    """
+    show recommendations of wishlist
+    :param conn:
+    :return:
+    """
+    cur = conn.cursor()
+    sql = "WITH f AS(SELECT t.price, sg.genres FROM (" \
+          "SELECT g.appid, g.name, g.price FROM usertable u, steam_games g WHERE u.gameid = g.appid) t " \
+          "LEFT JOIN steam_genres sg ON t.appid = sg.steam_appid)," \
+          "genres AS(SELECT genres AS genre, rownum AS rn FROM (" \
+          "SELECT genres, COUNT(*) AS c FROM f GROUP BY genres ORDER BY c DESC )" \
+          "WHERE ROWNUM <= 2)" \
+          "(SELECT * from (" \
+          "SELECT g.appid, g.name, g.price, g.tags, h.header_image " \
+          "FROM steam_games g, steam_genres ge, steam_headerimage h " \
+          "WHERE g.appid = ge.steam_appid AND g.appid = h.steam_appid " \
+          "AND g.appid not in (SELECT gameid FROM usertable)AND g.price <= (SELECT MAX(price) FROM f)" \
+          " AND g.price >= (SELECT MIN(price) FROM f) AND ge.genres = (SELECT genre FROM genres WHERE rn = 1)" \
+          "ORDER BY g.average_playtime)WHERE ROWNUM <= 3)" \
+          "UNION (SELECT * from (SELECT g.appid, g.name, g.price, g.tags, " \
+          "h.header_image FROM steam_games g, steam_genres ge, steam_headerimage h " \
+          "WHERE g.appid = ge.steam_appid AND g.appid = h.steam_appid " \
+          "AND g.appid not in (SELECT gameid FROM usertable)" \
+          "AND g.price <= (SELECT MAX(price) FROM f)" \
+          "AND g.price >= (SELECT MIN(price) FROM f)" \
+          "AND ge.genres = (SELECT genre FROM genres WHERE rn = 2)" \
+          "ORDER BY g.average_playtime)WHERE ROWNUM <= 2)"
+    try:
+        x = cur.execute(sql)
+        res = x.fetchall()
+        cur.close()
+        return res
+    except Exception:
+        print(traceback.format_exc())
+        print("[ERROR] SQL query not executed.")
+        cur.close()
+        return None
+
+
+
+
+
 if __name__ == "__main__":
     conn = get_connection()
 
