@@ -295,7 +295,7 @@ def wishlist_rec(conn):
           "WHERE g.appid = ge.steam_appid AND g.appid = h.steam_appid " \
           "AND g.appid not in (SELECT gameid FROM usertable)AND g.price <= (SELECT MAX(price) FROM f)" \
           " AND g.price >= (SELECT MIN(price) FROM f) AND ge.genres = (SELECT genre FROM genres WHERE rn = 1)" \
-          "ORDER BY g.average_playtime)WHERE ROWNUM <= 3)" \
+          "ORDER BY g.average_playtime)WHERE ROWNUM <= 5)" \
           "UNION (SELECT * from (SELECT g.appid, g.name, g.price, g.tags, " \
           "h.header_image FROM steam_games g, steam_genres ge, steam_headerimage h " \
           "WHERE g.appid = ge.steam_appid AND g.appid = h.steam_appid " \
@@ -303,7 +303,7 @@ def wishlist_rec(conn):
           "AND g.price <= (SELECT MAX(price) FROM f)" \
           "AND g.price >= (SELECT MIN(price) FROM f)" \
           "AND ge.genres = (SELECT genre FROM genres WHERE rn = 2)" \
-          "ORDER BY g.average_playtime)WHERE ROWNUM <= 2)"
+          "ORDER BY g.average_playtime)WHERE ROWNUM <= 3)"
     try:
         x = cur.execute(sql)
         res = x.fetchall()
