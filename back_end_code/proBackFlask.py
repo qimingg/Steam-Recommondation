@@ -134,22 +134,21 @@ def wishlist_show_game():
         status = 'failure'
     res_show = show_wishlist(conn, order)
     res_rec = wishlist_rec(conn)
-    print(res)
     conn.close()
     return jsonify({'data': {'show':res_show, 'recommendation':res_rec}, 'DBstatus': status})
 
 
-@app.route("/api/wishlist/recommendation", methods=['GET'])
-def wishlist_recommend():
-    conn = get_connection()
-    if conn is not None:
-        status = 'success'
-    else:
-        status = 'failure'
-    res = wishlist_rec(conn)
-    print(res)
-    conn.close()
-    return jsonify({'data': res, 'DBstatus': status})
+# @app.route("/api/wishlist/recommendation", methods=['GET'])
+# def wishlist_recommend():
+#     conn = get_connection()
+#     if conn is not None:
+#         status = 'success'
+#     else:
+#         status = 'failure'
+#     res = wishlist_rec(conn)
+#     print(res)
+#     conn.close()
+#     return jsonify({'data': res, 'DBstatus': status})
 
 
 #------------
