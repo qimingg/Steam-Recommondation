@@ -34,7 +34,7 @@ def get_top_ratings():
 @app.route("/api/dashboard/search", methods=["GET"])
 def dashboard_search():
     title = request.args.get('title', '', str).lower()
-    limit = request.args.get('limit', '5')
+    limit = request.args.get('limit', '10')
     offset = request.args.get('offset', '0')
     if not title:
         return jsonify(dict(error='lack of parameters'))
