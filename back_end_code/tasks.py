@@ -173,16 +173,28 @@ def game_details(conn, gameid):
         res[5] = res[5].replace(';', '; ')
         sql = "SELECT short_description FROM steam_description WHERE steam_appid = '%s'" % gameid
         x = cur.execute(sql)
-        res.extend(list(x.fetchone()))
+        lst = list(x.fetchone())
+        if lst == None:
+            lst = ['Not shown']
+        res.extend(lst)
         sql = "SELECT header_image FROM steam_headerimage WHERE steam_appid = '%s'" % gameid
         x = cur.execute(sql)
-        res.extend(list(x.fetchone()))
+        lst = list(x.fetchone())
+        if lst == None:
+            lst = []
+        res.extend(lst)
         sql = "SELECT minimum,recommended FROM steam_requirements WHERE steam_appid = '%s'" % gameid
         x = cur.execute(sql)
-        res.extend(list(x.fetchone()))
+        lst = list(x.fetchone())
+        if lst == None:
+            lst = ['Not shown', 'Not shown']
+        res.extend(lst)
         sql = "SELECT thumbnail,full_image FROM steam_screenshots WHERE steam_appid = '%s' AND ROWNUM <= 3" % gameid
         x = cur.execute(sql)
-        res.append(x.fetchall())
+        lst = list(x.fetchone())
+        if lst == None:
+            lst = []
+        res.append(lst)
         print(res)
         cur.close()
         return res
